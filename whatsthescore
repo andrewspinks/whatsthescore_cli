@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+require './lib/person.rb'
+require './lib/match.rb'
+require "highline/import"
+require 'net/http'
+
+singles = ask('Singles?') { |q| q.default = "Y" }
+is_singles = (singles =~ /[Yy]/) == 0
+
+players = []
+number_of_players = is_singles ? 2 : 4
+(1..number_of_players).each_with_index do |index|
+	players[index - 1] = create_player index
+end
+
+req = Net::HTTP::Post.new('games/create')
+req.content_type = 'application/json'
+# req.body = players.to_j
+req.body = "{'test':'test'}"
+
+http = Net::HTTP.new('192.168.0.195', 3000)
+http.request req
+
+`say 'game on mother fuckers'`
+
+puts 'Uploading result to racquet.io ...'
