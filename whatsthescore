@@ -15,9 +15,9 @@ number_of_players = is_singles ? 2 : 4
 end
 
 api = Api.new
-api.create_game players
+game = api.create_game players
 
-match = Match.new api
+match = Match.new game
 match.play
 
 puts 'Uploading result to racquet.io ...'

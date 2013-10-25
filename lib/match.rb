@@ -1,8 +1,9 @@
 
 class Match
 
-	def initialize api
-    @api = api
+	def initialize game
+    @game = game
+    @api = Api.new
 	end
 
   def play
@@ -12,17 +13,17 @@ class Match
     until match_finished
       key = show_single_key
 
-      winning_team = ""
+      winning_team = nil
       case key
       when "RIGHT ARROW"
-        winning_team = "team 2"
+        winning_team = :team_a
       when "LEFT ARROW"
-        winning_team = "team 1"
+        winning_team = :team_b
       end
 
-      unless winning_team.empty?
+      unless winning_team.nil?
         puts "#{winning_team} scored!"
-        score = @api.score_team winning_team
+        score = @api.score_team @game[winning_team]
         puts "Current score: #{score}"
       end
     end

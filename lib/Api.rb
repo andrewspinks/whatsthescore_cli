@@ -12,20 +12,18 @@ class Api
 	def create_game players
     req = Net::HTTP::Post.new('/games/create')
     req.content_type = 'application/json'
-    puts players
-    req.body = { players: players.inject([]) {|array, player| array << player[:name]  } }.to_json
+    req.body = { players: players.inject([]) {|array, player| array << player[:name] } }.to_json
 
     resp = @http.request req
-    puts req.body
-    @game_url = JSON.parse(resp.body, symbolize_names: true )[:url]
-    puts @game_url
+    game = JSON.parse(resp.body, symbolize_names: true )
+    puts game
+    game
   end
 
-
   def score_team team
-    req = Net::HTTP::Post.new(@game_url)
+    req = Net::HTTP::Post.new(team[:score_url])
     req.content_type = 'application/json'
-    req.body = { team: team }.to_json
+    # req.body = { team: team }.to_json
     resp = @http.request req
     puts resp
     # JSON.parse(resp.body)[:url]
