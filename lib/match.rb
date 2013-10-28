@@ -9,6 +9,11 @@ class Match
   def play
     match_finished = false
     # `say 'game on mother fuckers'`
+    puts '----------------------------------'
+    puts '--------- MATCH BEGIN ------------'
+    puts 'Left arrow = score to team A'
+    puts 'Right arrow = score to team B'
+    puts '----------------------------------'
 
     until match_finished
       key = show_single_key
@@ -16,17 +21,28 @@ class Match
       winning_team = nil
       case key
       when "RIGHT ARROW"
-        winning_team = :team_a
-      when "LEFT ARROW"
         winning_team = :team_b
+      when "LEFT ARROW"
+        winning_team = :team_a
       end
 
       unless winning_team.nil?
         puts "#{winning_team} scored!"
-        score = @api.score_team @game[winning_team]
-        puts "Current score: #{score}"
+        @score = @api.score_team @game[winning_team]
+        puts "#{@score[:winning_team]} leads: #{@score[:score]}"
+        match_finished = @score[:status] == 'Game over'
+        unless @score[:encouragement].empty?
+          `say #{@score[:encouragement]}`
+        end
+        @score[:instructions].each do |instruction|
+          `say #{instruction}`
+        end
       end
     end
+    puts '----------------------------------'
+    puts "-- MATCH COMPLETE - #{@score[:winning_team]} wins! --"
+    puts '----------------------------------'
+    `say Match complete - #{@score[:winning_team]} wins!`
   end
 
   def get_char
@@ -52,9 +68,9 @@ class Match
     when "\eOD"
       "LEFT ARROW"
     when /^.$/
-      puts "SINGLE CHAR HIT: #{c.inspect}"
+      # puts "SINGLE CHAR HIT: #{c.inspect}"
     else
-      puts "SOMETHING ELSE: #{c.inspect}"
+      # puts "SOMETHING ELSE: #{c.inspect}"
     end
   end
 end

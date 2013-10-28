@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'pry'
 
 class Api
 
@@ -16,16 +17,17 @@ class Api
 
     resp = @http.request req
     game = JSON.parse(resp.body, symbolize_names: true )
-    puts game
+    # puts game
     game
   end
 
   def score_team team
+    # binding.pry
     req = Net::HTTP::Post.new(team[:score_url])
     req.content_type = 'application/json'
     # req.body = { team: team }.to_json
     resp = @http.request req
-    puts resp
-    # JSON.parse(resp.body)[:url]
+    # puts resp
+    score = JSON.parse(resp.body, symbolize_names: true )
   end    
 end
