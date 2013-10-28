@@ -10,7 +10,7 @@ class Match
     match_finished = false
     puts '----------------------------------'
     puts '--------- MATCH BEGIN ------------'
-    `say -v Tessa "game on!'"`
+    `say --interactive=/green -v Trinoids "Game on!'"`
     puts 'Left arrow = score to team A'
     puts 'Right arrow = score to team B'
     puts '----------------------------------'
@@ -32,17 +32,17 @@ class Match
         puts "#{@score[:winning_team]} leads: #{@score[:score]}"
         match_finished = @score[:status] == 'Game over'
         unless @score[:encouragement].empty?
-          `say -v Tessa "#{@score[:encouragement]}"`
+          `say --rate=300 -v Oliver "#{@score[:encouragement]}"`
         end
         @score[:instructions].each do |instruction|
-          `say -v Tessa "#{instruction}"`
+          `say -v Oliver "#{instruction}"`
         end
       end
     end
     puts '----------------------------------'
     puts "-- MATCH COMPLETE - #{@score[:winning_team]} wins! --"
     puts '----------------------------------'
-    `say -v Tessa "Match complete - #{@score[:winning_team]} wins!"`
+    `say -v 'Bad News' "Match complete - #{@score[:winning_team]} wins!"`
   end
 
   def get_char
